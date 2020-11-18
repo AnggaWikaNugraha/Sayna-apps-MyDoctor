@@ -12,8 +12,18 @@ import IconBackLight from './arrow_back_24px_white.svg';
 import IconNext from './chevron_right_24px_outlined.svg';
 import SendActive from './sendActive.svg';
 import SendUn from './sendUnActive.svg';
+import LanguageIcon from './aatranslate_24px_outlined.svg';
+import AccountIcon from './account_circle_24px_outlined.svg';
+import RateIcon from './aastar_outline_24px_outlined.svg';
+import DescIcon from './aadescription_24px_outlined.svg';
+import IcRemove from './ic_remove_foto.svg';
 
 export {
+  IcRemove,
+  LanguageIcon,
+  AccountIcon,
+  RateIcon,
+  DescIcon,
   IconBackDark,
   BtnAddFoto,
   BtnRemoveFoto,

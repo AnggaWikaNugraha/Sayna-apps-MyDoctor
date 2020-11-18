@@ -8,8 +8,12 @@ import Messages from './Messages';
 import Hospitals from './Hospitals';
 import ChooseDoctor from './ChooseDoctor.js';
 import Chatting from './Chatting';
+import UserProfile from './UserProfile';
+import UpdateProfile from './UpdateProfile';
 
 export {
+  UpdateProfile,
+  UserProfile,
   Splash,
   GetStarted,
   Register,

@@ -1,6 +1,6 @@
 import Header from './Header';
 import BottomNavigator from './BottomNavigator';
-import ListDoctor from './ListDoctor';
 import ChatItem from './ChatItem';
+import Profile from './Profile';
 
-export {Header, BottomNavigator, ChatItem, ListDoctor};
+export {Header, BottomNavigator, Profile, ChatItem};
