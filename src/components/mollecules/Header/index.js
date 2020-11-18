@@ -2,8 +2,12 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Gap, Button} from '../../atoms';
 import {colors, fonts} from '../../../utils';
+import DarkProfile from './DarkProfile';
 
 const Header = ({onPress, title, type}) => {
+  if (type == 'dark-profile') {
+    return <DarkProfile />;
+  }
   return (
     <View style={styles.container(type)}>
       <Button

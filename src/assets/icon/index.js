@@ -10,6 +10,8 @@ import IconHospitalsActive from './textsms_active.svg';
 import Start from './star_rate_18px.svg';
 import IconBackLight from './arrow_back_24px_white.svg';
 import IconNext from './chevron_right_24px_outlined.svg';
+import SendActive from './sendActive.svg';
+import SendUn from './sendUnActive.svg';
 
 export {
   IconBackDark,
@@ -24,4 +26,6 @@ export {
   Start,
   IconBackLight,
   IconNext,
+  SendActive,
+  SendUn,
 };
