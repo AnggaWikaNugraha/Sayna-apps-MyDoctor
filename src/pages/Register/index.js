@@ -5,6 +5,7 @@ import {set} from 'react-native-reanimated';
 import {Header, Input, Button, Gap} from '../../components';
 import {colors} from '../../utils';
 import {useForm} from '../../utils/UseForm';
+import Fire from 'firebase';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -15,7 +16,17 @@ const Register = ({navigation}) => {
   });
 
   const onContinue = () => {
-    console.log(form);
+    Fire.auth()
+      .createUserWithEmailAndPassword(form.email, form.password)
+      .then((suc) => {
+        console.log('succes :', suc);
+      })
+      .catch(function (error) {
+        // Handle Errors here.
+        const errorMessage = error.message;
+        console.log('error register', errorMessage);
+        // ...
+      });
   };
 
   return (
