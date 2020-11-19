@@ -3,14 +3,15 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import {DummyDoctor1, start} from '../../../assets';
 import {Start} from '../../../../src/assets/icon';
 import {colors, fonts} from '../../../utils';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const RatedDoctor = () => {
+const RatedDoctor = ({onPress, name, desc, avatar}) => {
   return (
-    <View style={styles.container}>
-      <Image source={DummyDoctor1} style={styles.avatar} />
+    <TouchableOpacity onPress={onPress} style={styles.container}>
+      <Image source={avatar} style={styles.avatar} />
       <View style={styles.profile}>
-        <Text style={styles.name}>Alexa Rache</Text>
-        <Text style={styles.category}>Pediatrician</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.category}>{desc}</Text>
       </View>
       <View style={styles.rate}>
         <Start />
@@ -19,7 +20,7 @@ const RatedDoctor = () => {
         <Start />
         <Start />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

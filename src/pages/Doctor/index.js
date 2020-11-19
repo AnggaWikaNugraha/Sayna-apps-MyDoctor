@@ -8,7 +8,12 @@ import {fonts, colors} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import Gap from '../../components/atoms/Gap';
 
-import {JSONCategoryDoctor} from '../../assets';
+import {
+  DummyDoctor1,
+  DummyDoctor2,
+  DummyDoctor3,
+  JSONCategoryDoctor,
+} from '../../assets';
 
 const Doctor = ({navigation}) => {
   return (
@@ -41,9 +46,24 @@ const Doctor = ({navigation}) => {
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top rated doctors</Text>
-            <RatedDoctor />
-            <RatedDoctor />
-            <RatedDoctor />
+            <RatedDoctor
+              name="alexa rachel"
+              desc="Pediatrician"
+              avatar={DummyDoctor1}
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
+            <RatedDoctor
+              name="sunny frank"
+              desc="dentist"
+              avatar={DummyDoctor2}
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
+            <RatedDoctor
+              name="Peo Min"
+              desc="Podiatrist"
+              avatar={DummyDoctor3}
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
             <Text style={{marginTop: 16, marginBottom: 16}}>Good news</Text>
           </View>
           <NewsItem />
