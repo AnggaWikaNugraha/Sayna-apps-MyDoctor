@@ -1,19 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import HomeProfile from '../../components/mollecules/HomeProfile';
-import DoctorCategory from '../../components/mollecules/DoctorCategory';
+import DoctorCategory from '../../components/mollecules/DoctorCategory/index';
 import RatedDoctor from '../../components/mollecules/RatedDoctor';
 import NewsItem from '../../components/mollecules/NewsItem';
 import {fonts, colors} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import Gap from '../../components/atoms/Gap';
+import JSONCategoryDoctor from '../../assets/Json/dummy/category-doctor.json';
 
-import {
-  DummyDoctor1,
-  DummyDoctor2,
-  DummyDoctor3,
-  JSONCategoryDoctor,
-} from '../../assets';
+import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 
 const Doctor = ({navigation}) => {
   return (

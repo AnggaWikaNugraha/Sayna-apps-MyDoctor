@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {color} from 'react-native-reanimated';
 import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
-
-import {Header, List} from '../../components';
+import List from '../../components/mollecules/List';
+import {Header} from '../../components';
 import {colors} from '../../utils';
 
 const ChooseDoctor = ({navigation}) => {

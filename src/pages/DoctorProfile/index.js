@@ -6,10 +6,10 @@ import Profile from '../../components/mollecules/Profile';
 import ProfileItem from '../../components/mollecules/ProfileItem';
 import {colors} from '../../utils';
 
-const DoctorProfile = () => {
+const DoctorProfile = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="Doctor Profile" />
+      <Header onPress={() => navigation.goBack()} title="Doctor Profile" />
       <Profile name="Nairobi Putri Hayza" profesi="Dokter Anak" />
       <Gap height={10} />
       <ProfileItem label="alumnus" value="Universitas indonesia , 2020" />
@@ -17,7 +17,10 @@ const DoctorProfile = () => {
       <ProfileItem label="no. STR" value="0001116662087" />
       <Gap height={23} />
       <View style={styles.action}>
-        <Button title="Start Consultasi" />
+        <Button
+          title="Start Consultasi"
+          onPress={() => navigation.navigate('Chatting')}
+        />
       </View>
     </View>
   );

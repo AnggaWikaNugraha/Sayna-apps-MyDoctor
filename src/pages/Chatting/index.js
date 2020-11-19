@@ -4,10 +4,14 @@ import {ChatItem, Header} from '../../components';
 import InputChat from '../../components/mollecules/InputChat';
 import {colors, fonts} from '../../utils';
 
-const Chatting = () => {
+const Chatting = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header type="dark-profile" title="Nairobi Putri Hayza" />
+      <Header
+        type="dark-profile"
+        title="Nairobi Putri Hayza"
+        onPress={() => navigation.goBack()}
+      />
       <Text style={styles.chatDate}>Senin, 21 Maret, 2020</Text>
       <View style={styles.content}>
         <ChatItem />
