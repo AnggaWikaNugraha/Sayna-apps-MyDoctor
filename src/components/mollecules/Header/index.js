@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
     fontFamily: fonts.primary[600],
-    color: type === 'dark' ? colors.white : fonts.primary[600],
+    color: type === 'dark' ? colors.white : colors.primary[600],
   }),
 });
