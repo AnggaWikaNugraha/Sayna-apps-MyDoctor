@@ -7,15 +7,25 @@ import {Button, Link, Gap} from '../../components/atoms';
 import {colors, fonts} from '../../utils';
 import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {showMessage} from 'react-native-flash-message';
 
 const UploadFoto = ({navigation}) => {
   const [photo, setphoto] = useState(ILUserFotoNull);
   const [hasPhoto, sethasPhoto] = useState(false);
   const GetImage = () => {
     ImagePicker.launchImageLibrary({}, (response) => {
-      const source = {uri: response.uri};
-      setphoto(source);
-      sethasPhoto(true);
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'ops , tidak memilih foto',
+          type: 'defaults',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        const source = {uri: response.uri};
+        setphoto(source);
+        sethasPhoto(true);
+      }
     });
   };
   return (
