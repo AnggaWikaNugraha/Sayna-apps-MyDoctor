@@ -1,26 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import Header from '../../components/mollecules/Header';
 import {ILUserFotoNull} from '../../assets/ilustration';
-import {BtnAddFoto} from '../../assets/icon';
+import {BtnAddFoto, IcRemove} from '../../assets/icon';
 import {Button, Link, Gap} from '../../components/atoms';
 import {colors, fonts} from '../../utils';
+import ImagePicker from 'react-native-image-picker';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const UploadFoto = ({navigation}) => {
+  const [photo, setphoto] = useState(ILUserFotoNull);
+  const [hasPhoto, sethasPhoto] = useState(false);
+  const GetImage = () => {
+    ImagePicker.launchImageLibrary({}, (response) => {
+      const source = {uri: response.uri};
+      setphoto(source);
+      sethasPhoto(true);
+    });
+  };
   return (
     <View style={styles.page}>
       <Header title="Upload Foto" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.profile}>
-          <View style={styles.avatarWrapper}>
-            <Image source={ILUserFotoNull} style={styles.avatar} />
-            <BtnAddFoto style={styles.addFoto} />
-          </View>
+          <TouchableOpacity style={styles.avatarWrapper} onPress={GetImage}>
+            <Image source={photo} style={styles.avatar} />
+            {!hasPhoto && <BtnAddFoto style={styles.addFoto} />}
+            {hasPhoto && <IcRemove style={styles.addFoto} />}
+          </TouchableOpacity>
           <Text style={styles.name}>Shayna Melinda</Text>
           <Text style={styles.profession}>Product Deisgner</Text>
         </View>
         <View style={styles.click}>
-          <Button title="Upload and Continue" />
+          <Button disable={!hasPhoto} title="Upload and Continue" />
           <Gap height={30} />
           <Link
             onPress={() => navigation.replace('MainApp')}
@@ -68,6 +80,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   avatar: {
+    borderRadius: 100 / 2,
     width: 110,
     height: 110,
   },

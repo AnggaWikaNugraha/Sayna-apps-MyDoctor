@@ -11,17 +11,34 @@ const Button = ({type, title, onPress, size, icon, disable}) => {
   }
   if (type === 'icon-only') {
     return <IconOnly icon={icon} onPress={onPress} />;
-  } else {
+  }
+  if (disable) {
     return (
-      <TouchableOpacity style={styles.container(type)} onPress={onPress}>
-        <Text style={styles.text(type, size)}>{title}</Text>
-      </TouchableOpacity>
+      <View style={styles.disableBg}>
+        <Text style={styles.textDisable}>{title}</Text>
+      </View>
     );
   }
+  return (
+    <TouchableOpacity style={styles.container(type)} onPress={onPress}>
+      <Text style={styles.text(type, size)}>{title}</Text>
+    </TouchableOpacity>
+  );
 };
 export default Button;
 
 const styles = StyleSheet.create({
+  disableBg: {
+    backgroundColor: colors.button.disabe.background,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  textDisable: {
+    fontSize: 18,
+    textAlign: 'center',
+    //apakah dia typenya secondary ? kalo iya warna hitam kalo tidak warna putih
+    color: colors.button.disabe.text,
+  },
   container: (type) => ({
     //apakah dia typenya secondary ? kalo iya warna hitam kalo tidak warna putih
     backgroundColor:
