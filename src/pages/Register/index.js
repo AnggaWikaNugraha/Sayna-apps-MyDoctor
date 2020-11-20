@@ -5,7 +5,7 @@ import {set} from 'react-native-reanimated';
 import {Header, Input, Button, Gap, Landing} from '../../components';
 import {colors} from '../../utils';
 import {useForm} from '../../utils/UseForm';
-import Fire from 'firebase';
+import Fire from '../../config/firebase';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}) => {
@@ -25,18 +25,32 @@ const Register = ({navigation}) => {
       .then((suc) => {
         setloading(false);
         setForm('reset');
+
+        //   add data to realtime database
+        const data = {
+          fullName: form.fullName,
+          proffesion: form.profession,
+          email: form.email,
+        };
+
+        // https://firebase.com/users/id/
+        Fire.database()
+          .ref('users/' + suc.user.uid + '/')
+          .set(data);
         console.log('succes :', suc);
       })
       .catch(function (error) {
         setloading(false);
+        const errorMessage = error.message;
         showMessage({
-          message: 'Simple message',
+          message: errorMessage,
           type: 'info',
           backgroundColor: colors.error,
           color: colors.white,
         });
+        setForm('reset');
         // Handle Errors here.
-        const errorMessage = error.message;
+
         console.log('error register', errorMessage);
         // ...
       });
