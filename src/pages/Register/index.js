@@ -31,12 +31,14 @@ const Register = ({navigation}) => {
           fullName: form.fullName,
           proffesion: form.profession,
           email: form.email,
+          uid: suc.user.uid,
         };
         // https://firebase.com/users/id/
         Fire.database()
           .ref('users/' + suc.user.uid + '/')
           .set(data);
         storeData('user', data);
+        // navigate sambil mengirim parameter
         navigation.navigate('UploadFoto', data);
         console.log('succes :', suc);
       })

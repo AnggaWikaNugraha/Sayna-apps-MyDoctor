@@ -8,9 +8,11 @@ import {colors, fonts} from '../../utils';
 import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {showMessage} from 'react-native-flash-message';
+import Fire from '../../config/firebase';
 
 const UploadFoto = ({navigation, route}) => {
-  const {fullName, proffesion, email} = route.params;
+  const {fullName, proffesion, uid} = route.params;
+  const [photoForDb, setphotoForDb] = useState('');
 
   const [photo, setphoto] = useState(ILUserFotoNull);
   const [hasPhoto, sethasPhoto] = useState(false);
@@ -24,11 +26,20 @@ const UploadFoto = ({navigation, route}) => {
           color: colors.white,
         });
       } else {
+        //ambil type dan data untuk mmendapatkan data foto
+        setphotoForDb(`data:${response.type};base64, ${response.data}`);
         const source = {uri: response.uri};
         setphoto(source);
         sethasPhoto(true);
       }
     });
+  };
+
+  const uploadAndContinue = () => {
+    Fire.database()
+      .ref('users/' + uid + '/')
+      .update({photo: photoForDb});
+    navigation.navigate('MainApp');
   };
   return (
     <View style={styles.page}>
@@ -44,7 +55,11 @@ const UploadFoto = ({navigation, route}) => {
           <Text style={styles.profession}>{proffesion}</Text>
         </View>
         <View style={styles.click}>
-          <Button disable={!hasPhoto} title="Upload and Continue" />
+          <Button
+            onPress={uploadAndContinue}
+            disable={!hasPhoto}
+            title="Upload and Continue"
+          />
           <Gap height={30} />
           <Link
             onPress={() => navigation.replace('MainApp')}
