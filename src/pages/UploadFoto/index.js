@@ -9,7 +9,9 @@ import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {showMessage} from 'react-native-flash-message';
 
-const UploadFoto = ({navigation}) => {
+const UploadFoto = ({navigation, route}) => {
+  const {fullName, proffesion, email} = route.params;
+
   const [photo, setphoto] = useState(ILUserFotoNull);
   const [hasPhoto, sethasPhoto] = useState(false);
   const GetImage = () => {
@@ -38,8 +40,8 @@ const UploadFoto = ({navigation}) => {
             {!hasPhoto && <BtnAddFoto style={styles.addFoto} />}
             {hasPhoto && <IcRemove style={styles.addFoto} />}
           </TouchableOpacity>
-          <Text style={styles.name}>Shayna Melinda</Text>
-          <Text style={styles.profession}>Product Deisgner</Text>
+          <Text style={styles.name}>{fullName}</Text>
+          <Text style={styles.profession}>{proffesion}</Text>
         </View>
         <View style={styles.click}>
           <Button disable={!hasPhoto} title="Upload and Continue" />

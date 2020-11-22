@@ -37,7 +37,7 @@ const Register = ({navigation}) => {
           .ref('users/' + suc.user.uid + '/')
           .set(data);
         storeData('user', data);
-        navigation.navigate('UploadFoto');
+        navigation.navigate('UploadFoto', data);
         console.log('succes :', suc);
       })
       .catch(function (error) {
