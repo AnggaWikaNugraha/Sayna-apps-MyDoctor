@@ -7,6 +7,7 @@ import {colors} from '../../utils';
 import {useForm} from '../../utils/UseForm';
 import Fire from '../../config/firebase';
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import {getData, storeData} from '../../utils/LocalStorage';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -25,18 +26,18 @@ const Register = ({navigation}) => {
       .then((suc) => {
         setloading(false);
         setForm('reset');
-
         //   add data to realtime database
         const data = {
           fullName: form.fullName,
           proffesion: form.profession,
           email: form.email,
         };
-
         // https://firebase.com/users/id/
         Fire.database()
           .ref('users/' + suc.user.uid + '/')
           .set(data);
+        storeData('user', data);
+        navigation.navigate('UploadFoto');
         console.log('succes :', suc);
       })
       .catch(function (error) {
@@ -50,7 +51,6 @@ const Register = ({navigation}) => {
         });
         setForm('reset');
         // Handle Errors here.
-
         console.log('error register', errorMessage);
         // ...
       });
