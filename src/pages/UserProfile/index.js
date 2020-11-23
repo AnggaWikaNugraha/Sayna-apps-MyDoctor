@@ -1,14 +1,35 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {ILUserFotoNull} from '../../assets';
 import {Gap, Header, Profile} from '../../components';
 import List from '../../components/mollecules/List';
+import {getData} from '../../utils/LocalStorage';
 
 const UserProfile = ({navigation}) => {
+  const [profile, setprofile] = useState({
+    fullName: '',
+    proffesion: '',
+    photo: ILUserFotoNull,
+  });
+  useEffect(() => {
+    getData('user').then((res) => {
+      const data = res;
+      data.photo = {uri: res.photo};
+      setprofile(res);
+    });
+  }, []);
   return (
     <View style={styles.page}>
       <Header title="Profile" onPress={() => navigation.goBack()} />
       <Gap height={10} />
-      <Profile name="sayna melinda" profesi="frontend" />
+      {profile.fullName.length > 0 && (
+        <Profile
+          name={profile.fullName}
+          profesi={profile.proffesion}
+          photo={profile.photo}
+        />
+      )}
+
       <Gap height={14} />
       <List
         name="edit profile"
