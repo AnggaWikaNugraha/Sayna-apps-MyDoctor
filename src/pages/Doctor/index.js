@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import HomeProfile from '../../components/mollecules/HomeProfile';
 import DoctorCategory from '../../components/mollecules/DoctorCategory/index';
@@ -10,8 +10,14 @@ import Gap from '../../components/atoms/Gap';
 import JSONCategoryDoctor from '../../assets/Json/dummy/category-doctor.json';
 
 import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
+import {getData} from '../../utils/LocalStorage';
 
 const Doctor = ({navigation}) => {
+  useEffect(() => {
+    getData('user').then((res) => {
+      console.log(res);
+    });
+  }, []);
   return (
     <View style={styles.page}>
       <View style={styles.content}>
@@ -31,7 +37,6 @@ const Doctor = ({navigation}) => {
                   return (
                     <DoctorCategory
                       onPress={() => navigation.navigate('ChooseDoctor')}
-                      key={item.id}
                       category={item.category}
                     />
                   );

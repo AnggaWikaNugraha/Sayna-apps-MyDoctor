@@ -9,9 +9,10 @@ import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {showMessage} from 'react-native-flash-message';
 import Fire from '../../config/firebase';
+import {storeData} from '../../utils/LocalStorage';
 
 const UploadFoto = ({navigation, route}) => {
-  //   const {fullName, proffesion, uid} = route.params;
+  const {fullName, proffesion, uid} = route.params;
   const [photoForDb, setphotoForDb] = useState('');
 
   const [photo, setphoto] = useState(ILUserFotoNull);
@@ -31,6 +32,7 @@ const UploadFoto = ({navigation, route}) => {
           //ambil type dan data untuk mmendapatkan data foto
           setphotoForDb(`data:${response.type};base64, ${response.data}`);
           const source = {uri: response.uri};
+
           setphoto(source);
           sethasPhoto(true);
         }
@@ -42,6 +44,10 @@ const UploadFoto = ({navigation, route}) => {
     Fire.database()
       .ref('users/' + uid + '/')
       .update({photo: photoForDb});
+    //ambil semua isi passing parameter
+    const data = route.params;
+    data.photo = photoForDb;
+    storeData('user', data);
     navigation.navigate('MainApp');
   };
   return (
@@ -54,8 +60,8 @@ const UploadFoto = ({navigation, route}) => {
             {!hasPhoto && <BtnAddFoto style={styles.addFoto} />}
             {hasPhoto && <IcRemove style={styles.addFoto} />}
           </TouchableOpacity>
-          <Text style={styles.name}>angga</Text>
-          <Text style={styles.profession}>coding</Text>
+          <Text style={styles.name}>{fullName}</Text>
+          <Text style={styles.profession}>{proffesion}</Text>
         </View>
         <View style={styles.click}>
           <Button
