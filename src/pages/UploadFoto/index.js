@@ -11,28 +11,31 @@ import {showMessage} from 'react-native-flash-message';
 import Fire from '../../config/firebase';
 
 const UploadFoto = ({navigation, route}) => {
-  const {fullName, proffesion, uid} = route.params;
+  //   const {fullName, proffesion, uid} = route.params;
   const [photoForDb, setphotoForDb] = useState('');
 
   const [photo, setphoto] = useState(ILUserFotoNull);
   const [hasPhoto, sethasPhoto] = useState(false);
   const GetImage = () => {
-    ImagePicker.launchImageLibrary({}, (response) => {
-      if (response.didCancel || response.error) {
-        showMessage({
-          message: 'ops , tidak memilih foto',
-          type: 'defaults',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
-      } else {
-        //ambil type dan data untuk mmendapatkan data foto
-        setphotoForDb(`data:${response.type};base64, ${response.data}`);
-        const source = {uri: response.uri};
-        setphoto(source);
-        sethasPhoto(true);
-      }
-    });
+    ImagePicker.launchImageLibrary(
+      {quality: 0.5, maxWidth: 200, maxHeight: 200},
+      (response) => {
+        if (response.didCancel || response.error) {
+          showMessage({
+            message: 'ops , tidak memilih foto',
+            type: 'defaults',
+            backgroundColor: colors.error,
+            color: colors.white,
+          });
+        } else {
+          //ambil type dan data untuk mmendapatkan data foto
+          setphotoForDb(`data:${response.type};base64, ${response.data}`);
+          const source = {uri: response.uri};
+          setphoto(source);
+          sethasPhoto(true);
+        }
+      },
+    );
   };
 
   const uploadAndContinue = () => {
@@ -51,8 +54,8 @@ const UploadFoto = ({navigation, route}) => {
             {!hasPhoto && <BtnAddFoto style={styles.addFoto} />}
             {hasPhoto && <IcRemove style={styles.addFoto} />}
           </TouchableOpacity>
-          <Text style={styles.name}>{fullName}</Text>
-          <Text style={styles.profession}>{proffesion}</Text>
+          <Text style={styles.name}>angga</Text>
+          <Text style={styles.profession}>coding</Text>
         </View>
         <View style={styles.click}>
           <Button
