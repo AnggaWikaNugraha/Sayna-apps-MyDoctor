@@ -1,17 +1,30 @@
 import React from 'react';
 import {StyleSheet, Image, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyUser, IcRemove} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Profile = ({name, profesi, isRemive, photo}) => {
+const Profile = ({name, profesi, isRemive, photo, onPress}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.borderProfile}>
-        <Image source={photo} style={styles.avatar} />
-        {isRemive && <IcRemove style={styles.removeFoto} />}
-      </View>
-      <Text style={styles.nama}>{name}</Text>
-      <Text style={styles.profesi}>{profesi}</Text>
+      {!isRemive && (
+        <View style={styles.borderProfile}>
+          <Image source={photo} style={styles.avatar} />
+          {isRemive && <IcRemove style={styles.removeFoto} />}
+        </View>
+      )}
+      {isRemive && (
+        <TouchableOpacity style={styles.borderProfile} onPress={onPress}>
+          <Image source={photo} style={styles.avatar} />
+          {isRemive && <IcRemove style={styles.removeFoto} />}
+        </TouchableOpacity>
+      )}
+      {name && (
+        <View>
+          <Text style={styles.nama}>{name}</Text>
+          <Text style={styles.profesi}>{profesi}</Text>
+        </View>
+      )}
     </View>
   );
 };
