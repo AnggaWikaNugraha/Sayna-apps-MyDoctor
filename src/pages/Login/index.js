@@ -7,20 +7,26 @@ import {useForm} from '../../utils/UseForm';
 import Fire from '../../config/firebase';
 
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import {Landing} from '../../components';
 import {ScrollView} from 'react-native-gesture-handler';
 import {storeData} from '../../utils/LocalStorage';
+import {useDispatch} from 'react-redux';
 
 const Login = ({navigation}) => {
   const [form, setform] = useForm({email: '', password: ''});
-  const [loading, setloading] = useState(false);
+  const dispatch = useDispatch();
+
   const login = () => {
-    setloading(true);
+    dispatch({
+      type: 'SET_LOADING',
+      value: true,
+    });
     Fire.auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then((res) => {
-        console.log(res);
-        setloading(false);
+        dispatch({
+          type: 'SET_LOADING',
+          value: false,
+        });
         //ambil data user dari database
         Fire.database()
           .ref(`users/${res.user.uid}`)
@@ -35,7 +41,10 @@ const Login = ({navigation}) => {
       })
       .catch((err) => {
         console.log(err);
-        setloading(false);
+        dispatch({
+          type: 'SET_LOADING',
+          value: false,
+        });
         showMessage({
           message: err.message,
           type: 'default',
@@ -44,6 +53,7 @@ const Login = ({navigation}) => {
         });
       });
   };
+
   return (
     <>
       <View style={styles.page}>
@@ -77,7 +87,6 @@ const Login = ({navigation}) => {
           />
         </ScrollView>
       </View>
-      {loading && <Landing />}
     </>
   );
 };

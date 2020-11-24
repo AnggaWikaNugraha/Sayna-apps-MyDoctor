@@ -7,3 +7,16 @@ dalam sebuah reducer ada parameter state dan action
 3. provider
 import {Provider} from 'react-redux'
 provider membutuhkan props yaitu store
+
+3. cara memanggil store global
+import {useSelector} from 'react-redux';
+const stateGlobal = useSelector((state) => state);
+
+4. merubah stateGlobal dengan action
+import {useDispatch} from 'react-redux';
+const dispatch = useDispatch();
+
+ dispatch({
+      type: 'SET_LOADING',
+      value: true,
+    });
