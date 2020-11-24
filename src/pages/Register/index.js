@@ -8,8 +8,11 @@ import {useForm} from '../../utils/UseForm';
 import Fire from '../../config/firebase';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {getData, storeData} from '../../utils/LocalStorage';
+import {useDispatch} from 'react-redux';
+import {showError} from '../../utils/ShowMessage';
 
 const Register = ({navigation}) => {
+  const dispatch = useDispatch();
   const [form, setForm] = useForm({
     fullName: '',
     profession: '',
@@ -20,11 +23,17 @@ const Register = ({navigation}) => {
   const [loading, setloading] = useState(false);
 
   const onContinue = () => {
-    setloading(true);
+    dispatch({
+      type: 'SET_LOADING',
+      value: true,
+    });
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then((suc) => {
-        setloading(false);
+        dispatch({
+          type: 'SET_LOADING',
+          value: false,
+        });
         setForm('reset');
         //   add data to realtime database
         const data = {
@@ -43,17 +52,14 @@ const Register = ({navigation}) => {
         console.log('succes :', suc);
       })
       .catch(function (error) {
-        setloading(false);
-        const errorMessage = error.message;
-        showMessage({
-          message: errorMessage,
-          type: 'info',
-          backgroundColor: colors.error,
-          color: colors.white,
+        dispatch({
+          type: 'SET_LOADING',
+          value: false,
         });
+        const errorMessage = error.message;
+        showError(errorMessage);
         setForm('reset');
         // Handle Errors here.
-        console.log('error register', errorMessage);
         // ...
       });
   };

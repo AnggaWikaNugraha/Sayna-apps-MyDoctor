@@ -5,11 +5,10 @@ import {Input, Link, Button, Gap} from '../../components/atoms';
 import {colors, fonts} from '../../utils';
 import {useForm} from '../../utils/UseForm';
 import Fire from '../../config/firebase';
-
-import {showMessage, hideMessage} from 'react-native-flash-message';
 import {ScrollView} from 'react-native-gesture-handler';
 import {storeData} from '../../utils/LocalStorage';
 import {useDispatch} from 'react-redux';
+import {showError} from '../../utils/ShowMessage';
 
 const Login = ({navigation}) => {
   const [form, setform] = useForm({email: '', password: ''});
@@ -40,17 +39,11 @@ const Login = ({navigation}) => {
           });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({
           type: 'SET_LOADING',
           value: false,
         });
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(err.message);
       });
   };
 

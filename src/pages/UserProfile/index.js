@@ -30,12 +30,7 @@ const UserProfile = ({navigation}) => {
         navigation.replace('GetStarted');
       })
       .catch((err) => {
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(err.message);
       });
   };
   return (

@@ -22,12 +22,7 @@ const UploadFoto = ({navigation, route}) => {
       {quality: 0.5, maxWidth: 200, maxHeight: 200},
       (response) => {
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'ops , tidak memilih foto',
-            type: 'defaults',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError('oops tidak memilih foto');
         } else {
           //ambil type dan data untuk mmendapatkan data foto
           setphotoForDb(`data:${response.type};base64, ${response.data}`);

@@ -10,6 +10,7 @@ import Fire from '../../config/firebase';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-picker';
 import {ILUserFotoNull} from '../../assets';
+import {showError} from '../../utils/ShowMessage';
 
 const UpdateProfile = ({navigation}) => {
   const [profile, setprofile] = useState({
@@ -31,17 +32,9 @@ const UpdateProfile = ({navigation}) => {
   }, []);
 
   const update = (e) => {
-    console.log('updatennya :', profile);
-
-    console.log('new password', password);
     if (password.length > 0) {
       if (password < 6) {
-        showMessage({
-          message: 'passwor kurang dari 6 karakter',
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError('password kurang dari 6');
       } else {
         //update password
         updatePassword();
@@ -58,12 +51,7 @@ const UpdateProfile = ({navigation}) => {
     Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         user.updatePassword(password).catch((err) => {
-          showMessage({
-            message: err.message,
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError(err.message);
         });
       }
     });
@@ -76,16 +64,10 @@ const UpdateProfile = ({navigation}) => {
       .ref(`users/${profile.uid}/`)
       .update(profile)
       .then((res) => {
-        console.log('succes:', data);
         storeData('user', data);
       })
       .catch((err) => {
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(err.message);
       });
   };
 
@@ -101,12 +83,7 @@ const UpdateProfile = ({navigation}) => {
       {quality: 0.5, maxWidth: 200, maxHeight: 200},
       (response) => {
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'ops , tidak memilih foto',
-            type: 'defaults',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError('oops tidak memilih foto');
         } else {
           //ambil type dan data untuk mmendapatkan data foto
           setphotoForDb(`data:${response.type};base64, ${response.data}`);
