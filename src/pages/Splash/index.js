@@ -16,6 +16,8 @@ const Splash = ({navigation}) => {
         }
       }, 3000);
     });
+    //unttuk menghapus page ini agar tidak d render ulang
+    return () => unsubscribe();
   }, [navigation]);
   return (
     <View style={styles.page}>
