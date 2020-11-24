@@ -4,6 +4,9 @@ import {ILUserFotoNull} from '../../assets';
 import {Gap, Header, Profile} from '../../components';
 import List from '../../components/mollecules/List';
 import {getData} from '../../utils/LocalStorage';
+import Fire from '../../config/firebase';
+import {showMessage} from 'react-native-flash-message';
+import {colors} from '../../utils';
 
 const UserProfile = ({navigation}) => {
   const [profile, setprofile] = useState({
@@ -18,6 +21,23 @@ const UserProfile = ({navigation}) => {
       setprofile(res);
     });
   }, []);
+
+  const signOut = () => {
+    Fire.auth()
+      .signOut()
+      .then((res) => {
+        console.log('succes signout ', res);
+        navigation.navigate('GetStarted');
+      })
+      .catch((err) => {
+        showMessage({
+          message: err.message,
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      });
+  };
   return (
     <View style={styles.page}>
       <Header title="Profile" onPress={() => navigation.goBack()} />
@@ -51,10 +71,11 @@ const UserProfile = ({navigation}) => {
         icon="rate"
       />
       <List
-        name="Help Center"
+        name="Sign out"
         desc="Read out Guideines"
         type="next"
         icon="help"
+        onPress={signOut}
       />
     </View>
   );
