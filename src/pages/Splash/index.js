@@ -7,19 +7,16 @@ import Fire from '../../config/firebase';
 const Splash = ({navigation}) => {
   //hooks
   useEffect(() => {
-    //bila user masih login langsung ke mainApp
-    setTimeout(() => {
-      Fire.auth().onAuthStateChanged((user) => {
+    const unsubscribe = Fire.auth().onAuthStateChanged((user) => {
+      setTimeout(() => {
         if (user) {
           navigation.navigate('MainApp');
         } else {
-          navigation.replace('GetSarted');
+          navigation.navigate('GetStarted');
         }
-      });
-      //replace untuk pindah halaman tanpa bisa back
-      navigation.replace('GetStarted');
-    }, 3000);
-  }, []);
+      }, 3000);
+    });
+  }, [navigation]);
   return (
     <View style={styles.page}>
       <ILLogo />
