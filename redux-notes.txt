@@ -1,0 +1,9 @@
+1.bikin sebuah store untuk menyimpan state global
+import {createStore} from 'redux';
+
+2.bikin sebuah reducer untuk mengubah sebuah state
+dalam sebuah reducer ada parameter state dan action
+
+3. provider
+import {Provider} from 'react-redux'
+provider membutuhkan props yaitu store

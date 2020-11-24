@@ -27,7 +27,7 @@ const UserProfile = ({navigation}) => {
       .signOut()
       .then((res) => {
         console.log('succes signout ', res);
-        navigation.navigate('GetStarted');
+        navigation.replace('GetStarted');
       })
       .catch((err) => {
         showMessage({
