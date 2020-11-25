@@ -6,15 +6,24 @@ import Profile from '../../components/mollecules/Profile';
 import ProfileItem from '../../components/mollecules/ProfileItem';
 import {colors} from '../../utils';
 
-const DoctorProfile = ({navigation}) => {
+const DoctorProfile = ({navigation, route}) => {
+  //ambil data yg sudah d kirim lewat navigation
+  const dataDoctor = route.params;
   return (
     <View style={styles.page}>
       <Header onPress={() => navigation.goBack()} title="Doctor Profile" />
-      <Profile name="Nairobi Putri Hayza" profesi="Dokter Anak" />
+      <Profile
+        name={dataDoctor.data.fullName}
+        profesi={dataDoctor.data.profession}
+        photo={{uri: dataDoctor.data.photo}}
+      />
       <Gap height={10} />
-      <ProfileItem label="alumnus" value="Universitas indonesia , 2020" />
-      <ProfileItem label="Tempat praktek " value="Rumah sakit Umum" />
-      <ProfileItem label="no. STR" value="0001116662087" />
+      <ProfileItem label="alumnus" value={dataDoctor.data.university} />
+      <ProfileItem
+        label="Tempat praktek "
+        value={dataDoctor.data.hospital_address}
+      />
+      <ProfileItem label="no. STR" value={dataDoctor.data.str_number} />
       <Gap height={23} />
       <View style={styles.action}>
         <Button
