@@ -14,7 +14,6 @@ import {storeData} from '../../utils/LocalStorage';
 const UploadFoto = ({navigation, route}) => {
   const {fullName, proffesion, uid} = route.params;
   const [photoForDb, setphotoForDb] = useState('');
-
   const [photo, setphoto] = useState(ILUserFotoNull);
   const [hasPhoto, sethasPhoto] = useState(false);
   const GetImage = () => {

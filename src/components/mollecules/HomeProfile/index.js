@@ -8,11 +8,9 @@ import {getData} from '../../../utils/LocalStorage';
 const HomeProfile = ({onPress}) => {
   useEffect(() => {
     getData('user').then((res) => {
-      console.log(res);
       //foto berupa string kita rubah ke sebuah objek
       const data = res;
       data.photo = {uri: res.photo};
-
       setprofile(res);
     });
   }, []);

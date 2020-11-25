@@ -31,7 +31,6 @@ const Login = ({navigation}) => {
           .ref(`users/${res.user.uid}`)
           .once('value')
           .then((resDb) => {
-            console.log('data user', resDb.val());
             if (resDb.val()) {
               storeData(resDb.val());
               navigation.navigate('MainApp');

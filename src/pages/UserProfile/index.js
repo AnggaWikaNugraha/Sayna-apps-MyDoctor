@@ -5,8 +5,6 @@ import {Gap, Header, Profile} from '../../components';
 import List from '../../components/mollecules/List';
 import {getData} from '../../utils/LocalStorage';
 import Fire from '../../config/firebase';
-import {showMessage} from 'react-native-flash-message';
-import {colors} from '../../utils';
 
 const UserProfile = ({navigation}) => {
   const [profile, setprofile] = useState({
@@ -26,7 +24,6 @@ const UserProfile = ({navigation}) => {
     Fire.auth()
       .signOut()
       .then((res) => {
-        console.log('succes signout ', res);
         navigation.replace('GetStarted');
       })
       .catch((err) => {

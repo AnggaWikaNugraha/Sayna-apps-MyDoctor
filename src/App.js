@@ -8,9 +8,7 @@ import {useSelector} from 'react-redux';
 import {Landing} from './components';
 
 const MainApp = () => {
-  const [loading, setLoading] = useState(false);
   const stateGlobal = useSelector((state) => state);
-  console.log(stateGlobal);
 
   return (
     <>

@@ -49,7 +49,6 @@ const Register = ({navigation}) => {
         storeData('user', data);
         // navigate sambil mengirim parameter
         navigation.navigate('UploadFoto', data);
-        console.log('succes :', suc);
       })
       .catch(function (error) {
         dispatch({

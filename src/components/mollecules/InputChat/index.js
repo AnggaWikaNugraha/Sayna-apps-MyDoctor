@@ -3,13 +3,11 @@ import {StyleSheet, Text, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {colors, fonts} from '../../../utils';
 import {Button} from '../../atoms';
-import ChatItem from '../ChatItem';
 
 const InputChat = () => {
   return (
     <View style={styles.container}>
       <TextInput style={styles.input} placeholder="Tulis Pesan Untuk Nairobi" />
-
       <Button type="btn-icon-send" />
     </View>
   );
