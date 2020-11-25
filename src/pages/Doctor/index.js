@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import HomeProfile from '../../components/mollecules/HomeProfile';
 import DoctorCategory from '../../components/mollecules/DoctorCategory/index';
@@ -8,15 +8,26 @@ import {fonts, colors} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import Gap from '../../components/atoms/Gap';
 import JSONCategoryDoctor from '../../assets/Json/dummy/category-doctor.json';
-
+import Fire from '../../config/firebase';
 import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
-import {getData} from '../../utils/LocalStorage';
+import {showError} from '../../utils/ShowMessage';
 
 const Doctor = ({navigation}) => {
+  const [news, setnews] = useState([]);
+
   useEffect(() => {
-    getData('user').then((res) => {
-      console.log(res);
-    });
+    //getdata firebase
+    Fire.database()
+      .ref('news/')
+      .once('value')
+      .then((res) => {
+        if (res.val()) {
+          setnews(res.val());
+        }
+      })
+      .catch((err) => {
+        showError(err.message);
+      });
   }, []);
   return (
     <View style={styles.page}>
@@ -67,9 +78,16 @@ const Doctor = ({navigation}) => {
             />
             <Text style={{marginTop: 16, marginBottom: 16}}>Good news</Text>
           </View>
-          <NewsItem />
-          <NewsItem />
-          <NewsItem />
+          {news.map((item) => {
+            return (
+              <NewsItem
+                key={item.id}
+                date={item.date}
+                title={item.title}
+                image={item.image}
+              />
+            );
+          })}
           <Gap height={30} />
         </ScrollView>
       </View>
