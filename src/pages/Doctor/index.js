@@ -7,7 +7,6 @@ import NewsItem from '../../components/mollecules/NewsItem';
 import {fonts, colors} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import Gap from '../../components/atoms/Gap';
-import JSONCategoryDoctor from '../../assets/Json/dummy/category-doctor.json';
 import Fire from '../../config/firebase';
 import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 import {showError} from '../../utils/ShowMessage';
@@ -15,10 +14,15 @@ import {showError} from '../../utils/ShowMessage';
 const Doctor = ({navigation}) => {
   const [news, setnews] = useState([]);
   const [category, setcategory] = useState([]);
-  console.log(category);
+  const [doctors, setdoctors] = useState([]);
 
   useEffect(() => {
-    //getdata firebase
+    getCategoryDoctor();
+    getTopRatedDoctor();
+    getNews();
+  }, []);
+
+  const getNews = () => {
     Fire.database()
       .ref('news/')
       .once('value')
@@ -30,8 +34,9 @@ const Doctor = ({navigation}) => {
       .catch((err) => {
         showError(err.message);
       });
+  };
 
-    //category doctor
+  const getCategoryDoctor = () => {
     Fire.database()
       .ref('category_doctor/')
       .once('value')
@@ -43,7 +48,34 @@ const Doctor = ({navigation}) => {
       .catch((err) => {
         showError(err.message);
       });
-  }, []);
+  };
+
+  const getTopRatedDoctor = () => {
+    Fire.database()
+      .ref('doctors/')
+      .orderByChild('rate')
+      .limitToLast(3)
+      .once('value')
+      .then((res) => {
+        if (res.val()) {
+          //data masih berupa object
+          const oldData = res.val();
+          //array of object karena di firebase return-nya berupa data , kita masukan ke dalam array
+          const data = [];
+          Object.keys(oldData).map((key) => {
+            data.push({
+              id: key,
+              data: oldData[key],
+            });
+          });
+          setdoctors(data);
+        }
+      })
+      .catch((err) => {
+        showError(err.message);
+      });
+  };
+
   return (
     <View style={styles.page}>
       <View style={styles.content}>
@@ -62,6 +94,7 @@ const Doctor = ({navigation}) => {
                 {category.map((item) => {
                   return (
                     <DoctorCategory
+                      key={item.id}
                       onPress={() => navigation.navigate('ChooseDoctor')}
                       category={item.category}
                     />
@@ -73,24 +106,17 @@ const Doctor = ({navigation}) => {
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top rated doctors</Text>
-            <RatedDoctor
-              name="alexa rachel"
-              desc="Pediatrician"
-              avatar={DummyDoctor1}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              name="sunny frank"
-              desc="dentist"
-              avatar={DummyDoctor2}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              name="Peo Min"
-              desc="Podiatrist"
-              avatar={DummyDoctor3}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
+            {doctors.map((doctor) => {
+              return (
+                <RatedDoctor
+                  key={doctor.id}
+                  name={doctor.data.fullName}
+                  desc={doctor.data.profession}
+                  avatar={{uri: doctor.data.photo}}
+                  onPress={() => navigation.navigate('DoctorProfile')}
+                />
+              );
+            })}
             <Text style={{marginTop: 16, marginBottom: 16}}>Good news</Text>
           </View>
           {news.map((item) => {
