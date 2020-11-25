@@ -6,9 +6,11 @@ import {Provider} from 'react-redux';
 import store from './redux/store';
 import {useSelector} from 'react-redux';
 import {Landing} from './components';
+import {YellowBox} from 'react-native';
 
 const MainApp = () => {
   const stateGlobal = useSelector((state) => state);
+  YellowBox.ignoreWarnings(['Setting a timer']);
 
   return (
     <>
