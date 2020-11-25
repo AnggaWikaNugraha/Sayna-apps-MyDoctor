@@ -14,6 +14,8 @@ import {showError} from '../../utils/ShowMessage';
 
 const Doctor = ({navigation}) => {
   const [news, setnews] = useState([]);
+  const [category, setcategory] = useState([]);
+  console.log(category);
 
   useEffect(() => {
     //getdata firebase
@@ -23,6 +25,19 @@ const Doctor = ({navigation}) => {
       .then((res) => {
         if (res.val()) {
           setnews(res.val());
+        }
+      })
+      .catch((err) => {
+        showError(err.message);
+      });
+
+    //category doctor
+    Fire.database()
+      .ref('category_doctor/')
+      .once('value')
+      .then((res) => {
+        if (res.val()) {
+          setcategory(res.val());
         }
       })
       .catch((err) => {
@@ -44,7 +59,7 @@ const Doctor = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap width={32} />
-                {JSONCategoryDoctor.data.map((item) => {
+                {category.map((item) => {
                   return (
                     <DoctorCategory
                       onPress={() => navigation.navigate('ChooseDoctor')}
