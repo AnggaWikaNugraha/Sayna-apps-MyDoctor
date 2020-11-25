@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 import List from '../../components/mollecules/List';
 import {Header} from '../../components';
 import {colors} from '../../utils';
@@ -45,7 +44,7 @@ const ChooseDoctor = ({navigation, route}) => {
       {listDoctor.map((doc) => {
         return (
           <List
-            onPress={() => navigation.navigate('Chatting')}
+            onPress={() => navigation.navigate('DoctorProfile', doc)}
             type="next"
             profile={{uri: doc.data.photo}}
             name={doc.data.fullName}
