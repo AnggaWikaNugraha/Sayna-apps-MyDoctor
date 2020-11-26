@@ -44,6 +44,7 @@ const ChooseDoctor = ({navigation, route}) => {
       {listDoctor.map((doc) => {
         return (
           <List
+            key={doc.id}
             onPress={() => navigation.navigate('DoctorProfile', doc)}
             type="next"
             profile={{uri: doc.data.photo}}
