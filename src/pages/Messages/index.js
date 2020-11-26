@@ -7,47 +7,32 @@ import Fire from '../../config/firebase';
 import {getData} from '../../utils/LocalStorage';
 
 const Messages = ({navigation}) => {
-  const [doctors] = useState([
-    {
-      id: 1,
-      profile: DummyDoctor1,
-      name: 'Alexander janni',
-      desc: 'Baik bu , terimakasih',
-    },
-    {
-      id: 2,
-      profile: DummyDoctor2,
-      name: 'nairobi putri hayza',
-      desc: 'oh tentu saja tidak',
-    },
-    {
-      id: 3,
-      profile: DummyDoctor3,
-      name: 'Johm Mcpaker steve',
-      desc: 'Oke menuru saya dokter bagaimana',
-    },
-  ]);
   const [user, setuser] = useState({});
   const [historyChat, sethistoryChat] = useState([]);
   useEffect(() => {
     getDataUserFromLocal();
+    const rootDB = Fire.database().ref();
     const urlHistory = `messages/${user.uid}/`;
-    Fire.database()
-      .ref(urlHistory)
-      .on('value', (snapshot) => {
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const newData = [];
-          Object.keys(oldData).map((key) => {
-            newData.push({
-              id: key,
-              ...oldData[key],
-            });
+    const messageDB = rootDB.child(urlHistory);
+    messageDB.on('value', async (snapshot) => {
+      if (snapshot.val()) {
+        const oldData = snapshot.val();
+        const newData = [];
+        const promises = await Object.keys(oldData).map(async (key) => {
+          const urlUidDoctor = `doctors/${oldData[key].uidPartner}`;
+          const detailDcotor = await rootDB.child(urlUidDoctor).once('value');
+          console.log(detailDcotor.val());
+          newData.push({
+            id: key,
+            detailDoctor: detailDcotor.val(),
+            ...oldData[key],
           });
-          console.log(newData);
-          sethistoryChat(newData);
-        }
-      });
+        });
+        await Promise.all(promises);
+        console.log(newData);
+        sethistoryChat(newData);
+      }
+    });
   }, [user.id]);
   const getDataUserFromLocal = () => {
     getData('user').then((res) => {
@@ -58,15 +43,21 @@ const Messages = ({navigation}) => {
     <View style={styles.page}>
       <View style={styles.content}>
         <Text style={styles.title}>Messages</Text>
-        {historyChat.map((chat) => (
-          <List
-            key={chat.id}
-            desc={chat.lastContentChat}
-            name={chat.uidPartner}
-            profile={chat.uidPartner}
-            onPress={() => navigation.navigate('Chatting')}
-          />
-        ))}
+        {historyChat.map((chat) => {
+          const dataDoctor = {
+            id: chat.detailDoctor.uid,
+            data: chat.detailDoctor,
+          };
+          return (
+            <List
+              key={chat.id}
+              desc={chat.lastContentChat}
+              name={chat.detailDoctor.fullName}
+              profile={{uri: chat.detailDoctor.photo}}
+              onPress={() => navigation.navigate('Chatting', dataDoctor)}
+            />
+          );
+        })}
       </View>
     </View>
   );
