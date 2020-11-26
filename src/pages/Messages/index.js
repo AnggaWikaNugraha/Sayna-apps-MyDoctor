@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 import List from '../../components/mollecules/List';
 import {colors, fonts} from '../../utils';
+import Fire from '../../config/firebase';
+import {getData} from '../../utils/LocalStorage';
 
 const Messages = ({navigation}) => {
   const [doctors] = useState([
@@ -25,16 +27,43 @@ const Messages = ({navigation}) => {
       desc: 'Oke menuru saya dokter bagaimana',
     },
   ]);
+  const [user, setuser] = useState({});
+  const [historyChat, sethistoryChat] = useState([]);
+  useEffect(() => {
+    getDataUserFromLocal();
+    const urlHistory = `messages/${user.uid}/`;
+    Fire.database()
+      .ref(urlHistory)
+      .on('value', (snapshot) => {
+        if (snapshot.val()) {
+          const oldData = snapshot.val();
+          const newData = [];
+          Object.keys(oldData).map((key) => {
+            newData.push({
+              id: key,
+              ...oldData[key],
+            });
+          });
+          console.log(newData);
+          sethistoryChat(newData);
+        }
+      });
+  }, [user.id]);
+  const getDataUserFromLocal = () => {
+    getData('user').then((res) => {
+      setuser(res);
+    });
+  };
   return (
     <View style={styles.page}>
       <View style={styles.content}>
         <Text style={styles.title}>Messages</Text>
-        {doctors.map((doc) => (
+        {historyChat.map((chat) => (
           <List
-            key={doc.id}
-            desc={doc.desc}
-            name={doc.name}
-            profile={doc.profile}
+            key={chat.id}
+            desc={chat.lastContentChat}
+            name={chat.uidPartner}
+            profile={chat.uidPartner}
             onPress={() => navigation.navigate('Chatting')}
           />
         ))}
