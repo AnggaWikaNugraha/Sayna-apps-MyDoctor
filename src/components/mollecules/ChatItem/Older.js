@@ -3,15 +3,15 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import {DummyDoctor1} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Older = () => {
+const Older = ({text, date, photo}) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.avatar} source={DummyDoctor1} />
+      <Image style={styles.avatar} source={photo} />
       <View>
         <View style={styles.chatContent}>
-          <Text style={styles.text}>apakah betul memakan jeruk bagus ?</Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
-        <Text style={styles.date}>4.20 Am</Text>
+        <Text style={styles.date}>{date}</Text>
       </View>
     </View>
   );
@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'flex-end',
     flexDirection: 'row',
+    maxWidth: '80%',
   },
   chatContent: {
-    maxWidth: '80%',
     padding: 12,
     paddingRight: 18,
     borderRadius: 10,

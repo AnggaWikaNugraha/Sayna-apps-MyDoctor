@@ -6,18 +6,52 @@ import InputChat from '../../components/mollecules/InputChat';
 import {colors, fonts, getChattime, setDateChat} from '../../utils';
 import Fire from '../../config/firebase';
 import {getData} from '../../utils/LocalStorage';
-import {min} from 'react-native-reanimated';
 import {showError} from '../../utils/ShowMessage';
 
 const Chatting = ({navigation, route}) => {
   const dataDoctor = route.params;
   const [chatChontent, setchatChontent] = useState('');
   const [user, setuser] = useState({});
+  const [chatData, setchatData] = useState([]);
+  console.log(dataDoctor.data.photo);
+
   useEffect(() => {
+    getDataUserFromLocal();
+    const chatID = `${user.uid}_${dataDoctor.data.uid}`;
+    const urlFirebase = `chatting/${chatID}/allChat/`;
+    Fire.database()
+      .ref(urlFirebase)
+      .on('value', (snapshot) => {
+        if (snapshot.val()) {
+          const dataSnapshot = snapshot.val();
+          const allDataChat = [];
+          Object.keys(dataSnapshot).map((key) => {
+            const dataChat = dataSnapshot[key];
+            const newDataChat = [];
+
+            Object.keys(dataChat).map((itemChat) => {
+              newDataChat.push({
+                id: itemChat,
+                data: dataChat[itemChat],
+              });
+            });
+
+            allDataChat.push({
+              id: key,
+              data: newDataChat,
+            });
+          });
+          setchatData(allDataChat);
+        }
+      });
+  }, []);
+
+  const getDataUserFromLocal = () => {
     getData('user').then((res) => {
       setuser(res);
     });
-  }, []);
+  };
+
   const chatSend = () => {
     const today = new Date();
     const chatID = `${user.uid}_${dataDoctor.data.uid}`;
@@ -51,10 +85,31 @@ const Chatting = ({navigation, route}) => {
       <Text style={styles.chatDate}>Senin, 21 Maret, 2020</Text>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ChatItem />
-          <ChatItem isme />
-          <ChatItem />
-          <ChatItem isme />
+          {chatData.map((chat) => {
+            return (
+              <View key={chat.id}>
+                <Text style={styles.chatDate}>{chat.id}</Text>
+                {chat.data.map((itemChat) => {
+                  {
+                    /* console.log({uri: dataDoctor.data.photo}); */
+                  }
+                  return (
+                    <ChatItem
+                      key={itemChat.id}
+                      isme={itemChat.data.sendBy === user.uid}
+                      text={itemChat.data.chatContent}
+                      date={itemChat.data.chatTime}
+                      photo={
+                        itemChat.data.sendBy === user.uid
+                          ? null
+                          : {uri: dataDoctor.data.photo}
+                      }
+                    />
+                  );
+                })}
+              </View>
+            );
+          })}
         </ScrollView>
       </View>
       <InputChat
