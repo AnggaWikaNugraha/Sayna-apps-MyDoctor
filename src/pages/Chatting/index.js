@@ -13,7 +13,6 @@ const Chatting = ({navigation, route}) => {
   const [chatChontent, setchatChontent] = useState('');
   const [user, setuser] = useState({});
   const [chatData, setchatData] = useState([]);
-  console.log(dataDoctor.data.photo);
 
   useEffect(() => {
     getDataUserFromLocal();
@@ -54,19 +53,36 @@ const Chatting = ({navigation, route}) => {
 
   const chatSend = () => {
     const today = new Date();
-    const chatID = `${user.uid}_${dataDoctor.data.uid}`;
-    const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
     const data = {
       sendBy: user.uid,
       chatDate: today.getTime(),
       chatTime: getChattime(today),
       chatContent: chatChontent,
     };
+    const chatID = `${user.uid}_${dataDoctor.data.uid}`;
+    const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
+    const urlMessageUser = `messages/${user.uid}/${chatID}`;
+    const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatID}`;
+    const dataHistoryChatForUser = {
+      lastContentChat: chatChontent,
+      lastChatDate: today.getTime(),
+      uidPartner: dataDoctor.data.uid,
+    };
+    const dataHistoryChatForDoctor = {
+      lastContentChat: chatChontent,
+      lastChatDate: today.getTime(),
+      uidPartner: user.uid,
+    };
+
     Fire.database()
       .ref(urlFirebase)
       .push(data)
       .then((res) => {
         setchatChontent('');
+        //set history untuk user
+        Fire.database().ref(urlMessageUser).set(dataHistoryChatForUser);
+        //set history untuk doctor
+        Fire.database().ref(urlMessageDoctor).set(dataHistoryChatForDoctor);
       })
       .catch((err) => {
         showError(err.message);
@@ -90,9 +106,6 @@ const Chatting = ({navigation, route}) => {
               <View key={chat.id}>
                 <Text style={styles.chatDate}>{chat.id}</Text>
                 {chat.data.map((itemChat) => {
-                  {
-                    /* console.log({uri: dataDoctor.data.photo}); */
-                  }
                   return (
                     <ChatItem
                       key={itemChat.id}
