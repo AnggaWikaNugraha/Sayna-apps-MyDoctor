@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header} from '../../components';
 import InputChat from '../../components/mollecules/InputChat';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getChattime, setDateChat} from '../../utils';
 import Fire from '../../config/firebase';
 import {getData} from '../../utils/LocalStorage';
 import {min} from 'react-native-reanimated';
@@ -20,24 +20,16 @@ const Chatting = ({navigation, route}) => {
   }, []);
   const chatSend = () => {
     const today = new Date();
-    const hour = today.getHours();
-    const minutes = today.getMinutes();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
+    const chatID = `${user.uid}_${dataDoctor.data.uid}`;
+    const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
     const data = {
       sendBy: user.uid,
-      chatDate: new Date().getTime(),
-      chatTime: `${hour}:${minutes} ${hour > 12 ? 'PM' : 'AM'}`,
+      chatDate: today.getTime(),
+      chatTime: getChattime(today),
       chatContent: chatChontent,
     };
-    console.log(
-      `chatting/${user.uid}_${dataDoctor.data.uid}/allChat/${year}-${month}-${date}`,
-    );
     Fire.database()
-      .ref(
-        `chatting/${user.uid}_${dataDoctor.data.uid}/allChat/${year}-${month}-${date}`,
-      )
+      .ref(urlFirebase)
       .push(data)
       .then((res) => {
         setchatChontent('');
